@@ -1,8 +1,22 @@
-<div style="text-align: center">
-  <h1>Welcome to hogwarts!</h1>
-  <img
-    width="450"
-    src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-  />
+﻿<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/">Home</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="container">
+    <router-outlet></router-outlet>
 </div>
-<div>Message: {{ hello$ | async | json }}</div>
+
+<!-- credits -->
+<div class="text-center mt-4">
+    <p>
+        Зырянова Анастасия и Кубикова Екатерина
+    </p>
+    <p>
+        <a href="https://github.com/Nastennn" target="_top">github.com/Nastennn</a>
+    </p>
+</div>
