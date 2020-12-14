@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background: url("https://i.gifer.com/Rjht.gif") no-repeat;
+  background-size: 100%;
+}
