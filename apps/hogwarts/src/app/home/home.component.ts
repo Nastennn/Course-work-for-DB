@@ -8,8 +8,11 @@ import { UserService } from '../_services';
 export class HomeComponent {
     loading = false;
     users: User[];
+    currentUser: User;
 
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }
 
     ngOnInit() {
         this.loading = true;
