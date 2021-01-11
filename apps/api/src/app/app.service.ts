@@ -2,9 +2,16 @@ import { Injectable } from '@nestjs/common';
 import postgres from 'postgres';
 import { v4 as uuid } from 'uuid';
 import { User } from '../../../hogwarts/src/app/_models';
+import conf from '../../../../database.json';
 
+const dbConfig = conf.dev;
+const user = dbConfig.user;
+const password = dbConfig.password
+const host = dbConfig.host || 'localhost';
+const port = dbConfig.port || 5432;
+const database = dbConfig.database || 'hogwarts';
 
-const sql = postgres('postgres://user:password@localhost:5432/hogwarts');
+const sql = postgres(`postgres://${user}:${password}@${host}:${port}/${database}`);
 
 @Injectable()
 export class AppService {
