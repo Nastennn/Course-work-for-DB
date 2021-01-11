@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import postgres from 'postgres';
-import { v4 as uuid } from 'uuid';
-import { User } from '../../../hogwarts/src/app/_models';
+import {v4 as uuid} from 'uuid';
+import {User} from '../../../hogwarts/src/app/_models';
 import conf from '../../../../database.json';
 
 const dbConfig = conf.dev;
@@ -61,6 +61,7 @@ export class AppService {
       [user] = await sql`
         SELECT *
         FROM characters
+               join character_roles cr on characters.id = cr.character_id
         WHERE id = ${user.id}`;
 
       return user;
