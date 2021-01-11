@@ -8,5 +8,5 @@
   points: number;
   subject_id: number;
   student_id: number;
-  role: number;
+  role_id: number;
 }
