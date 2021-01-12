@@ -11,10 +11,12 @@ export class UserService {
   }
 
   getAll() {
-    return this.http.get<User[]>(`${environment.apiUrl}/api/users`);
+    const {sid} = JSON.parse(localStorage.currentUser);
+    console.log(sid);
+    return this.http.get<User[]>(`${environment.apiUrl}/api/users?sid=${sid}`);
   }
 
-  putExamMark(studentId: number, subjectId: number, points: number) {
-    return this.http.put<User[]>(`${environment.apiUrl}/api/users`, { studentId, subjectId, points });
+  putExamMark(examId: number, points: number) {
+    return this.http.put<User[]>(`${environment.apiUrl}/api/users`, { examId, points });
   }
 }

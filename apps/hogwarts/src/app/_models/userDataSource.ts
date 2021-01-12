@@ -9,10 +9,8 @@ export class UserDataSource extends LocalDataSource {
   }
 
   async update(element: any, values: any): Promise<any> {
-    const { student_id: studentId, subject_id: subjectId, points } = Object.assign({}, element, values);
-    await this.userService.putExamMark(studentId, subjectId, points).pipe(first()).subscribe(() => {});
+    const { exam_id: examId, points } = Object.assign({}, element, values);
+    await this.userService.putExamMark(examId, points).pipe(first()).subscribe(() => {});
     return super.update(element, values);
   }
-
-
 }
