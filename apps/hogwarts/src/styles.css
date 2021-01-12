@@ -1,5 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-  background: url("https://i.gifer.com/Rjht.gif") no-repeat;
-  background-size: 100%;
+    background: url("https://i.gifer.com/Rjht.gif") no-repeat;
+    background-size: 100%;
+}
+
+footer {
+    position: fixed; /* Фиксированное положение */
+    left: 0;
+    bottom: 0; /* Левый нижний угол */
+    padding: 10px; /* Поля вокруг текста */
+    background: maroon; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    width: 100%; /* Ширина слоя */
+    /*text-align: center;*/
+}
+
+.names {
+}
+
+.github {
+    text-align: right;
+}
+
+.controller {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }
