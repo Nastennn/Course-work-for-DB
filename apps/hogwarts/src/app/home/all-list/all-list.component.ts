@@ -1,23 +1,24 @@
-﻿import {Component} from '@angular/core';
-import {first} from 'rxjs/operators';
+import {Component} from "@angular/core";
+import {User} from "../../_models";
+import {UserService} from "../../_services";
+import {first} from "rxjs/operators";
+import {UserDataSource} from "../../_models/userDataSource";
 
-import {User} from '../_models';
-import {UserService} from '../_services';
-import {UserDataSource} from '../_models/userDataSource';
-import {doc} from "prettier";
-
-@Component({templateUrl: 'home.component.html', styleUrls: ['home.component.css']})
-export class HomeComponent {
+@Component({
+    styleUrls: ['../home.component.css'],
+    templateUrl: 'all-list.component.html'
+})
+export class AllListComponent {
     loading = false;
+    users: User[];
     currentUser: User;
     data: UserDataSource;
-    tabs: Element[];
+
 
     constructor(private userService: UserService) {
         this.userService = userService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.data = new UserDataSource(this.userService);
-
     }
 
     settings = {
@@ -53,5 +54,4 @@ export class HomeComponent {
             await this.data.load(users);
         });
     }
-
 }

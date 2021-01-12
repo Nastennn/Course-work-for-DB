@@ -1,0 +1,8 @@
+<div class="tab-content">
+    <h5>All</h5>
+    <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+    <div class="card-body">
+        <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+        <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
+    </div>
+</div>

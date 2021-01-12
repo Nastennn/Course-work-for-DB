@@ -1,0 +1,22 @@
+/* Change background color of buttons on hover */
+.tab-links:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tab-link class */
+.tab-links.active {
+    background-color: #ccc;
+}
+
+.tab-links {
+    width: 25%;
+    display: inline-block;
+    background-color: inherit;
+    float: left;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border: 1px solid #ccc;
+    text-align: left;
+}

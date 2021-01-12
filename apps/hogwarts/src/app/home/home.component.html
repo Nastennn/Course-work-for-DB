@@ -1,7 +1,19 @@
 ﻿<div class="card mt-4">
     <h4 class="card-header">You're logged as @{{currentUser.username}} ({{currentUser.name}}) </h4>
-    <div class="card-body">
-      <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-      <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
+    <hogwarts-tabs>
+        <hogwarts-tab tabTitle="All" routing-url="/all">
+        </hogwarts-tab>
+        <hogwarts-tab tabTitle="Professors" routing-url="/professors">
+        </hogwarts-tab>
+        <hogwarts-tab tabTitle="Students" routing-url="/students">
+        </hogwarts-tab>
+        <hogwarts-tab tabTitle="Profile" routing-url="/profile">
+            {{currentUser.name}}
+            Date of birth:
+            {{currentUser.date_of_birth}}
+        </hogwarts-tab>
+    </hogwarts-tabs>
+    <div class="tab-content">
+        <router-outlet></router-outlet>
     </div>
 </div>
