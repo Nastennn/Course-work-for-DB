@@ -12,7 +12,7 @@ footer {
     background: maroon; /* Цвет фона */
     color: #fff; /* Цвет текста */
     width: 100%; /* Ширина слоя */
-    /*text-align: center;*/
+    z-index: 1;
 }
 
 .names {
