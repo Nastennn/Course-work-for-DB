@@ -1,6 +1,6 @@
 ﻿import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {AppComponent} from './app.component';
@@ -16,6 +16,7 @@ import {StudListComponent} from "./home/stud-list/stud-list.component";
 import {ProfileComponent} from "./home/profile/profile.component";
 import {TabsComponent} from "./home/tabs/tabs.component";
 import {TabComponent} from "./home/tabs/tab.component";
+import {StaffListComponent} from "./home/staff-list/staff-list.component";
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import {TabComponent} from "./home/tabs/tab.component";
         ReactiveFormsModule,
         HttpClientModule,
         appRoutingModule,
-        Ng2SmartTableModule
+        Ng2SmartTableModule,
+        FormsModule
     ],
     declarations: [
         AppComponent,
@@ -33,7 +35,8 @@ import {TabComponent} from "./home/tabs/tab.component";
         ProfListComponent,
         StudListComponent,
         ProfileComponent,
-        TabsComponent, TabComponent
+        StaffListComponent,
+        TabsComponent, TabComponent,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

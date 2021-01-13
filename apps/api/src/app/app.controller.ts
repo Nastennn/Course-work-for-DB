@@ -15,6 +15,18 @@ export class AppController {
         return this.appService.getUsers(sid);
     }
 
+    @Get('examMarks')
+    getExamMarks(@Query() myDto) {
+        const { sid } = myDto;
+        return this.appService.getExamMarks(sid);
+    }
+
+    @Get('students')
+    getStudents(@Query() myDto, @Query() year, @Query() faculty) {
+        const { sid } = myDto;
+        return this.appService.getStudents(sid, year, faculty);
+    }
+
     @Post('users/authenticate')
     async authenticateUser(@Body() myDto): Promise<User> {
         const { username, password } = myDto;

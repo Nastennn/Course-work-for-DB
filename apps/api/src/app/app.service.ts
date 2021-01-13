@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import postgres from 'postgres';
-import { v4 as uuid } from 'uuid';
-import { User } from '../../../hogwarts/src/app/_models';
+import {v4 as uuid} from 'uuid';
+import {User} from '../../../hogwarts/src/app/_models';
 import conf from '../../../../database.json';
 
 const dbConfig = conf.dev;
@@ -68,6 +68,62 @@ export class AppService {
             `;
         }
 
+    }
+
+    async getExamMarks(sid: number) {
+        const [character] = await sql`
+            SELECT characters.id,
+                   character_roles.role_id,
+                   students.year AS year
+            FROM characters
+                     JOIN character_roles ON characters.id = character_roles.character_id
+                     JOIN students ON characters.id = students.character_id
+            WHERE sid = ${sid}
+        `;
+
+        return await sql`
+            SELECT exams.id        AS id,
+                   exams.points    AS points,
+                   subjects.name   AS subject_name,
+                   exam_types.name AS type,
+                   subjects.year   AS subject_year
+            FROM exams
+                     LEFT JOIN students ON students.id = exams.student_id
+                     LEFT JOIN subjects ON subjects.id = exams.subject_id
+                     LEFT JOIN exam_types on exam_types.id = exams.type_id
+            WHERE students.id = ${character.id};
+        `;
+    }
+
+    async getStudents(sid: number, year: number, faculty: string) {
+        const [character] = await sql`
+            SELECT characters.id,
+                   character_roles.role_id,
+                   students.year AS year
+            FROM characters
+                     JOIN character_roles ON characters.id = character_roles.character_id
+                     JOIN students ON characters.id = students.character_id
+            WHERE sid = ${sid}
+        `;
+
+        return await sql`
+            SELECT exams.points     AS points,
+                   characters.name  AS name,
+                   subjects.name    AS subject_name,
+                   exams.student_id AS student_id,
+                   exam_types.name  AS type
+            FROM exams
+                     LEFT JOIN students ON students.id = exams.student_id
+                     LEFT JOIN characters ON students.character_id = characters.id
+                     LEFT JOIN subjects ON subjects.id = exams.subject_id
+                     LEFT JOIN exam_types on exam_types.id = exams.type_id
+                     LEFT JOIN professors on subjects.id = professors.subject_id
+                     LEFT JOIN faculties on students.faculty_id = faculties.id
+            WHERE professors.id = ${character.id}
+              and students.id = ${year}
+              and faculties.name = ${faculty}
+            ;
+        `;
     }
 
     async putExamMark(examId: number, points: number) {

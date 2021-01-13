@@ -1,8 +1,8 @@
 {
   "dev": {
     "driver": "pg",
-    "user": "user",
-    "password": "password",
+    "user": "postgres",
+    "password": "123456",
     "database": "hogwarts"
   }
 }

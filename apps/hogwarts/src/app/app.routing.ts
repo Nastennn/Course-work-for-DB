@@ -7,6 +7,7 @@ import {ProfListComponent} from "./home/prof-list/prof-list.component";
 import {JournalComponent} from "./home/journal/journal.component";
 import {StudListComponent} from "./home/stud-list/stud-list.component";
 import {ProfileComponent} from "./home/profile/profile.component";
+import {StaffListComponent} from "./home/staff-list/staff-list.component";
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard],
@@ -22,6 +23,10 @@ const routes: Routes = [
             {
                 path: 'students', // child route path
                 component: StudListComponent, // child route component that the router renders
+            },
+            {
+                path: 'staff', // child route path
+                component: StaffListComponent, // child route component that the router renders
             },
             {
                 path: 'profile', // child route path

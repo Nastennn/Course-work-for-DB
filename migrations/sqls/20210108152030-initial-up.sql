@@ -296,6 +296,8 @@ INSERT INTO roles(name)
 VALUES ('студент');
 INSERT INTO roles(name)
 VALUES ('преподаватель');
+INSERT INTO roles(name)
+VALUES ('директор');
 -- FACULTIES
 INSERT INTO faculties(name)
 VALUES ('Гриффиндор');
@@ -382,6 +384,8 @@ INSERT INTO characters(id, name, date_of_birth, username, password)
 VALUES (6, 'Северус Снегг', '1960-1-9', 'snegg', 'password');
 INSERT INTO characters(id, name, date_of_birth, username, password)
 VALUES (7, 'Патриция Рейкпик', '1955-05-12', 'raykpick', 'password');
+INSERT INTO characters(id, name, date_of_birth, username, password)
+VALUES (8, 'Альбус Дамблдор', '1881-07-10', 'headmaster', 'password');
 -- CHARACTER_ROLES
 INSERT INTO character_roles(role_id, character_id)
 VALUES ('3', '1');
@@ -397,6 +401,8 @@ INSERT INTO character_roles(role_id, character_id)
 VALUES ('3', '6');
 INSERT INTO character_roles(role_id, character_id)
 VALUES ('3', '7');
+INSERT INTO character_roles(role_id, character_id)
+VALUES ('4', '8');
 -- STUDENTS
 INSERT INTO students(id, character_id, year, points, faculty_id)
 VALUES (1, 1, 1, 10, 1);
