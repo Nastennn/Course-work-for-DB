@@ -1,6 +1,18 @@
 <div class="tab-content">
-    <h5>Journal</h5>
-    <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+    <div>
+        <label>
+            Year
+            <select [(ngModel)]="selectedYear" (ngModelChange)="onChange($event)">
+                <option *ngFor="let year of years">{{year}}</option>
+            </select>
+        </label>
+        <label *ngIf="isProfessor">
+            Faculty
+            <select [(ngModel)]="selectedFaculty" (ngModelChange)="onChange($event)">
+                <option *ngFor="let faculty of faculties">{{faculty}}</option>
+            </select>
+        </label>
+    </div>
     <div class="card-body">
         <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
         <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>

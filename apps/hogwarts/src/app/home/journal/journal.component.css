@@ -1,0 +1,9 @@
+label {
+    padding: 6px;
+}
+
+select {
+    padding: 3px;
+    border: 1px solid #ccc;
+    font-family: "Calibri Light", serif;
+}

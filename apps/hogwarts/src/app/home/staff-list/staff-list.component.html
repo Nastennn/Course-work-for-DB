@@ -1,0 +1,7 @@
+<div class="tab-content">
+    <h5>Staff</h5>
+    <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+    <ul *ngIf="professors">
+        <li *ngFor="let professor of professors">{{professor}}</li>
+    </ul>
+</div>

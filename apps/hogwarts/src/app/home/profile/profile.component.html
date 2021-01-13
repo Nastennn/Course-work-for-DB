@@ -1,10 +1,9 @@
 <div class="tab-content">
-    <h5>Profile</h5>
-    <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-    <ul *ngIf="professors">
-        <li *ngFor="let professor of professors">{{professor}}</li>
-    </ul>
-    {{currentUser.name}}
-    Date of birth:
-    {{currentUser.date_of_birth}}
+    <p>{{greeting}}</p>
+    <h4>{{currentUser.name}}</h4><br>
+    <p>Login: {{currentUser.username}}</p>
+    <p>Birthday:
+        {{currentUser.date_of_birth ?
+            (currentUser.date_of_birth | date: 'MMMM d, y')
+            : 'unknown'}}</p>
 </div>
