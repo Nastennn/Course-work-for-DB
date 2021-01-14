@@ -41,7 +41,8 @@ export class StaffListComponent {
                     title: 'Place',
                 },
                 location: {
-                    title: 'Location'
+                    title: 'Location',
+                    editable: false
                 }
             },
             actions: {

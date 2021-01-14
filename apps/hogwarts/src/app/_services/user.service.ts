@@ -36,6 +36,12 @@ export class UserService {
     }
 
     putExamMark(examId: number, points: number) {
-        return this.http.put<User[]>(`${environment.apiUrl}/api/users`, {examId, points});
+        return this.http.put<User[]>(`${environment.apiUrl}/api/users`,
+            {examId, points});
+    }
+
+    putStaff(name: string, dob: string, place: string, un: string, p: string) {
+        return this.http.put<User[]>(`${environment.apiUrl}/api/staff`,
+            {name, dob, place, un, p});
     }
 }
