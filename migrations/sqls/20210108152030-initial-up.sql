@@ -140,11 +140,11 @@ CREATE TABLE exams
     points     int NOT NULL
 );
 
-CREATE OR REPLACE PROCEDURE ins_character(n text, dob date)
+CREATE OR REPLACE PROCEDURE ins_character(n text, dob date, un text, p text)
     LANGUAGE plpgsql AS
 $$
 BEGIN
-    INSERT INTO characters (name, date_of_birth) VALUES (n, dob);
+    INSERT INTO characters (name, date_of_birth, username, password) VALUES (n, dob, un, p);
 END
 $$;
 
@@ -156,11 +156,11 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_student(n text, username text, dob date, y int, f varchar)
+CREATE OR REPLACE PROCEDURE add_student(n text, un text, dob date, y int, f varchar)
     LANGUAGE plpgsql AS
 $$
 BEGIN
-    INSERT INTO characters (name, username, date_of_birth, password) VALUES (n, username, dob, 'password');
+    INSERT INTO characters (name, username, date_of_birth, password) VALUES (n, un, dob, 'password');
     INSERT INTO character_roles (role_id, character_id)
     VALUES (2, (
         SELECT id
@@ -179,11 +179,11 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_staff(n text, dob date, pl_name text, loc text)
+CREATE OR REPLACE PROCEDURE add_staff(n text, dob date, pl_name text, un text, p text)
     LANGUAGE plpgsql AS
 $$
 BEGIN
-    INSERT INTO characters (name, date_of_birth) VALUES (n, dob);
+    INSERT INTO characters (name, date_of_birth, username, password) VALUES (n, dob, un, p);
     INSERT INTO character_roles (role_id, character_id)
     VALUES (3, (
         SELECT id
@@ -201,7 +201,6 @@ BEGIN
                 FROM places
                          JOIN locations ON places.location_id = locations.id
                 WHERE places.name = pl_name
-                  AND loc = locations.name
             ));
 END
 $$;
@@ -369,6 +368,9 @@ INSERT INTO places(name, location_id, capacity)
 VALUES ('класс Флоренца', 1, 30);
 INSERT INTO places(name, location_id, capacity)
 VALUES ('большой зал', 1, 500);
+insert into places (name, location_id, capacity) values ('кухня Хогвартса', 1, 150);
+insert into places (name, location_id, capacity) values ('библиотека', 1, 500);
+insert into places (name, location_id, capacity) values ('Хогвартс', 1, null);
 -- CHARACTERS
 INSERT INTO characters(id, name, date_of_birth, username, password)
 VALUES (1, 'Минерва Макгонагалл', '1935-10-4', 'minerva', 'password');
@@ -582,6 +584,19 @@ VALUES ('вторник', 30, '12:00', 5);
 -- STAFF
 INSERT INTO staff(character_id, place_id)
 VALUES (5, 4);
+CALL add_staff('Винки', '1967-6-15', 'кухня Хогвартса', 'winky', 'password');
+CALL add_staff('Добби', '1965-6-28', 'кухня Хогвартса',  'dobby', 'password');
+CALL add_staff('Ирма Пинс', '1947-8-13', 'библиотека',  'irmapince', 'password');
+CALL add_staff('Питтс', '1970-11-19', 'кухня Хогвартса',  'pitts', 'password');
+
+CALL add_staff('Поппи Помфри', '1940-3-20', 'больничное крыло',  'poppypomfrey', 'password');
+CALL add_staff('Аглая Уайнскотт', '1970-2-10', 'больничное крыло',  'aglayawainscott', 'password');
+CALL add_staff('Мария Марон', '1975-5-11', 'больничное крыло',  'mariamarron', 'password');
+CALL add_staff('Ксения Ульянова', '1975-9-3', 'больничное крыло',  'kseniyaulyanova', 'password');
+CALL add_staff('Линдси Койзи', '1963-6-28', 'больничное крыло',  'lindseycozy', 'password');
+CALL add_staff('Финея Лакур', '1951-11-24', 'больничное крыло',  'finealacur', 'password');
+
+CALL add_staff('Аргус Филч', '1952-7-18', 'Хогвартс',  'argusfilch', 'password');
 -- STUDENTS
 SELECT SETVAL('characters_id_seq', (SELECT MAX(id) FROM characters));
 SELECT SETVAL('students_id_seq', (SELECT MAX(id) FROM students));
@@ -618,30 +633,6 @@ CALL add_student('Опра Маффон', 'user19', '1974-04-23', 7, varchar 'К
 CREATE INDEX join_prof ON professors (character_id);
 CREATE INDEX join_staff ON staff (character_id);
 CREATE INDEX join_stud ON students (character_id);
-
-CREATE OR REPLACE FUNCTION check_rt()
-    RETURNS TRIGGER
-    LANGUAGE PLPGSQL
-AS
-$$
-BEGIN
-
-    IF NEW.role_id = 1 THEN
-        INSERT INTO staff(character_id)
-        VALUES (NEW.character_id);
-    END IF;
-    IF NEW.role_id = 2 THEN
-        INSERT INTO students(character_id)
-        VALUES (NEW.character_id);
-    END IF;
-    IF NEW.role_id = 3 THEN
-        INSERT INTO professors(character_id)
-        VALUES (NEW.character_id);
-    END IF;
-
-    RETURN NEW;
-END;
-$$;
 
 CREATE TRIGGER check_related_tables
     AFTER INSERT
