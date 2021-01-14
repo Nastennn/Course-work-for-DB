@@ -27,7 +27,6 @@ export class StudListComponent {
             columns: {
                 name: {
                     title: 'Name',
-                    editable: false
                 },
                 date_of_birth: {
                     title: 'Birthday',
@@ -37,15 +36,12 @@ export class StudListComponent {
                         }
                         return null;
                     },
-                    editable: false
                 },
                 year: {
                     title: 'Year',
-                    editable: false
                 },
                 faculty: {
                     title: 'Faculty',
-                    editable: false
                 }
             },
             actions: {
