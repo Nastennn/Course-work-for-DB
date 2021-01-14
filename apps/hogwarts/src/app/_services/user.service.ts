@@ -17,16 +17,22 @@ export class UserService {
         return this.http.get<User[]>(`${environment.apiUrl}/api/users?sid=${sid}`);
     }
 
-    getExamMarks() {
+    getStaff() {
         const {sid} = JSON.parse(localStorage.currentUser);
         console.log(sid);
-        return this.http.get<Exam[]>(`${environment.apiUrl}/api/examMarks?sid=${sid}`);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/staff?sid=${sid}`);
     }
 
-    getStudents(year: number, faculty: string) {
+    getProfessors() {
         const {sid} = JSON.parse(localStorage.currentUser);
         console.log(sid);
-        return this.http.get<User[]>(`${environment.apiUrl}/api/students?sid=${sid}&year=${year}&faculty=${faculty}`);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/professors?sid=${sid}`);
+    }
+
+    getStudents() {
+        const {sid} = JSON.parse(localStorage.currentUser);
+        console.log(sid);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/students?sid=${sid}`);
     }
 
     putExamMark(examId: number, points: number) {

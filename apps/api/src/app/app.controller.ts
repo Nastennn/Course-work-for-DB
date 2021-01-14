@@ -15,16 +15,22 @@ export class AppController {
         return this.appService.getUsers(sid);
     }
 
-    @Get('examMarks')
-    getExamMarks(@Query() myDto) {
+    @Get('staff')
+    getStaff(@Query() myDto) {
         const { sid } = myDto;
-        return this.appService.getExamMarks(sid);
+        return this.appService.getStaff(sid);
+    }
+
+    @Get('professors')
+    getProfessors(@Query() myDto) {
+        const { sid } = myDto;
+        return this.appService.getProfessors(sid);
     }
 
     @Get('students')
-    getStudents(@Query() myDto, @Query() year, @Query() faculty) {
+    getStudents(@Query() myDto) {
         const { sid } = myDto;
-        return this.appService.getStudents(sid, year, faculty);
+        return this.appService.getStudents(sid);
     }
 
     @Post('users/authenticate')

@@ -3,6 +3,7 @@ import {User} from "../../_models";
 import {UserService} from "../../_services";
 import {first} from "rxjs/operators";
 import {UserDataSource} from "../../_models/userDataSource";
+import {DatePipe} from "@angular/common";
 
 const HEADMASTER_ROLE_ID = 4;
 const PROFESSOR_ROLE_ID = 3;
@@ -27,25 +28,22 @@ export class ProfListComponent {
         this.settings = {
             columns: {
                 name: {
-                    title: 'Professor',
+                    title: 'Name',
                     editable: false
                 },
-                year: {
-                    title: 'Year',
+                date_of_birth: {
+                    title: 'Birthday',
+                    valuePrepareFunction: (date) => {
+                        if (date) {
+                            return new DatePipe('en-GB').transform(date, 'MMMM d, y');
+                        }
+                        return null;
+                    },
                     editable: false
                 },
                 subject_name: {
                     title: 'Subject',
                     editable: false
-                },
-                points: {
-                    title: 'Points'
-                },
-                student_id: {
-                    hide: true
-                },
-                subject_id: {
-                    hide: true
                 }
             },
             actions: {
@@ -55,18 +53,10 @@ export class ProfListComponent {
             }
         };
         this.loading = true;
-        this.userService.getAll().pipe(first()).subscribe(async users => {
+        this.userService.getProfessors().pipe(first()).subscribe(async users => {
             this.loading = false;
             await this.data.load(users);
         });
     }
 
-    ngOnInit() {
-        this.loading = true;
-        // this.professors = ['d', 'd3', 'g'];
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.loading = false;
-            this.users = users;
-        });
-    }
 }
