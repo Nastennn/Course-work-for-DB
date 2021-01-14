@@ -43,4 +43,10 @@ export class AppController {
         const { examId, points } = myDto;
         return this.appService.putExamMark(examId, points);
     }
+
+    @Put('staff')
+    async putStaff(@Body() myDto): Promise<User> {
+        const { name, dob, place, un, p } = myDto;
+        return this.appService.putStaff(name, dob, place, un, p);
+    }
 }

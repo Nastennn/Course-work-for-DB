@@ -30,6 +30,24 @@ export class AppService {
                      LEFT JOIN students ON characters.id = students.character_id
             WHERE sid = ${sid}
         `;
+        // Headmaster
+        if (character.role_id === HEADMASTER_ID) {
+            return await sql`
+                SELECT exams.points                      AS points,
+                       subject_professor_year.year       AS year,
+                       characters.name                   AS name,
+                       subjects.name                     AS subject_name,
+                       subject_professor_year.id_subject AS subject_id,
+                       exams.student_id                  AS student_id,
+                       exams.id                          AS exam_id
+                FROM exams
+                         LEFT JOIN students ON students.id = exams.student_id
+                         LEFT JOIN characters ON students.character_id = characters.id
+                         LEFT JOIN subject_professor_year ON subject_professor_year.id = exams.subject_professor_year_id
+                         LEFT JOIN subjects ON subjects.id = subject_professor_year.id_subject
+                ;
+            `;
+        }
         // Professor
         if (character.role_id === PROFESSOR_ID) {
             return await sql`
@@ -89,7 +107,8 @@ export class AppService {
             SELECT characters.name          AS name,
                    characters.date_of_birth AS date_of_birth,
                    places.name              AS place,
-                   locations.name           AS location
+                   locations.name           AS location,
+                   characters.id            AS id
             FROM characters
                      JOIN staff s ON characters.id = s.character_id
                      LEFT JOIN places ON s.place_id = places.id
@@ -114,6 +133,18 @@ export class AppService {
             UPDATE exams
             SET points = ${points}
             WHERE exams.id = ${examId};
+        `;
+    }
+
+    async putProfessor(name: string, dob: string, place: string, un: string, p: string) {
+        return await sql`
+
+        `;
+    }
+
+    async putStaff(name: string, dob: string, place: string, un: string, p: string) {
+        return await sql`
+            CALL add_staff(${name}, ${dob}, ${place}, ${un}, ${p});
         `;
     }
 
