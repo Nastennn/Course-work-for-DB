@@ -1,7 +1,7 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import postgres from 'postgres';
-import {v4 as uuid} from 'uuid';
-import {User} from '../../../hogwarts/src/app/_models';
+import { v4 as uuid } from 'uuid';
+import { User } from '../../../hogwarts/src/app/_models';
 import conf from '../../../../database.json';
 
 const dbConfig = conf.dev;
@@ -71,14 +71,15 @@ export class AppService {
 
     }
 
-    async getProfessors(sid: number) {
+    async getProfessors() {
         return await sql`
             SELECT characters.name          AS name,
                    characters.date_of_birth AS date_of_birth,
-                   subjects.name            AS subject_name
+                   string_agg(distinct subjects.name, ', ') AS subject_name
             FROM characters
-                     JOIN subject_professor_year as spy ON spy.id_professor = characters.id
-                     LEFT JOIN subjects on spy.id_subject = subjects.id
+                     JOIN subject_professor_year AS spy ON spy.id_professor = characters.id
+                     JOIN subjects ON spy.id_subject = subjects.id
+            GROUP BY characters.name, characters.date_of_birth
 
         `;
     }
@@ -90,9 +91,9 @@ export class AppService {
                    places.name              AS place,
                    locations.name           AS location
             FROM characters
-                     JOIN staff s on characters.id = s.character_id
-                     LEFT JOIN places on s.place_id = places.id
-                     LEFT JOIN locations on places.location_id = locations.id
+                     JOIN staff s ON characters.id = s.character_id
+                     LEFT JOIN places ON s.place_id = places.id
+                     LEFT JOIN locations ON places.location_id = locations.id
         `;
     }
 
@@ -103,8 +104,8 @@ export class AppService {
                    students.year            AS year,
                    faculties.name           AS faculty
             FROM characters
-                     JOIN students on characters.id = students.character_id
-                     JOIN faculties on students.faculty_id = faculties.id
+                     JOIN students ON characters.id = students.character_id
+                     JOIN faculties ON students.faculty_id = faculties.id
         `;
     }
 

@@ -18,10 +18,10 @@ export class ProfileComponent {
     users: User[];
     currentUser: User;
     date: string;
-    role: number
-    greeting: string
+    role: number;
+    greeting: string;
 
-    constructor(private userService: UserService) {
+    constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.role = this.currentUser.role_id;
         if (this.role === PROFESSOR_ROLE_ID){
