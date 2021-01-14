@@ -9,10 +9,10 @@ const PROFESSOR_ROLE_ID = 3;
 const STUDENT_ROLE_ID = 2;
 
 @Component({
-    styleUrls: ['journal.component.css'],
-    templateUrl: 'journal.component.html'
+    styleUrls: ['gradebook.component.css'],
+    templateUrl: 'gradebook.component.html'
 })
-export class JournalComponent {
+export class GradebookComponent {
     loading = false;
     users: User[];
     currentUser: User;

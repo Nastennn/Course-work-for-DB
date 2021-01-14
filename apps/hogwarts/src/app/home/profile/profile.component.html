@@ -1,8 +1,9 @@
+<img src={{currentUser.image}} height='190px' class='img' />
 <div class="tab-content">
     <p>{{greeting}}</p>
     <h4>{{currentUser.name}}</h4><br>
     <p>Login: {{currentUser.username}}</p>
-    <p>Birthday:
+    <p>🎂 Birthday:
         {{currentUser.date_of_birth ?
             (currentUser.date_of_birth | date: 'MMMM d, y')
             : 'unknown'}}</p>

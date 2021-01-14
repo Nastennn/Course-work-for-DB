@@ -24,9 +24,7 @@ export class UserService {
     }
 
     getProfessors() {
-        const {sid} = JSON.parse(localStorage.currentUser);
-        console.log(sid);
-        return this.http.get<User[]>(`${environment.apiUrl}/api/professors?sid=${sid}`);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/professors`);
     }
 
     getStudents() {

@@ -140,15 +140,17 @@ CREATE TABLE exams
     points     int NOT NULL
 );
 
-CREATE OR REPLACE PROCEDURE ins_character(n text, dob date, un text, p text)
+CREATE OR REPLACE FUNCTION ins_character(n text, dob date, un text, p text)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
     INSERT INTO characters (name, date_of_birth, username, password) VALUES (n, dob, un, p);
-END
+END;
 $$;
 
-CREATE OR REPLACE PROCEDURE del_character(n text, dob date)
+CREATE OR REPLACE FUNCTION del_character(n text, dob date)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -156,7 +158,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_student(n text, un text, dob date, y int, f varchar)
+CREATE OR REPLACE FUNCTION add_student(n text, un text, dob date, y int, f varchar)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -179,7 +182,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_staff(n text, dob date, pl_name text, un text, p text)
+CREATE OR REPLACE FUNCTION add_staff(n text, dob date, pl_name text, un text, p text)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -223,7 +227,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_professor(n text, dob date, subj int)
+CREATE OR REPLACE FUNCTION add_professor(n text, dob date, subj int)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 DECLARE
@@ -243,7 +248,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_professor_subject(char_id int, subj int)
+CREATE OR REPLACE FUNCTION add_professor_subject(char_id int, subj int)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -260,7 +266,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE add_points(n text, p int)
+CREATE OR REPLACE FUNCTION add_points(n text, p int)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -270,7 +277,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE drop_points()
+CREATE OR REPLACE FUNCTION drop_points()
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -278,7 +286,8 @@ BEGIN
 END
 $$;
 
-CREATE OR REPLACE PROCEDURE remove_points(n text, p int)
+CREATE OR REPLACE FUNCTION remove_points(n text, p int)
+    RETURNS void
     LANGUAGE plpgsql AS
 $$
 BEGIN
@@ -368,9 +377,12 @@ INSERT INTO places(name, location_id, capacity)
 VALUES ('класс Флоренца', 1, 30);
 INSERT INTO places(name, location_id, capacity)
 VALUES ('большой зал', 1, 500);
-insert into places (name, location_id, capacity) values ('кухня Хогвартса', 1, 150);
-insert into places (name, location_id, capacity) values ('библиотека', 1, 500);
-insert into places (name, location_id, capacity) values ('Хогвартс', 1, null);
+INSERT INTO places (name, location_id, capacity)
+VALUES ('кухня Хогвартса', 1, 150);
+INSERT INTO places (name, location_id, capacity)
+VALUES ('библиотека', 1, 500);
+INSERT INTO places (name, location_id, capacity)
+VALUES ('Хогвартс', 1, NULL);
 -- CHARACTERS
 INSERT INTO characters(id, name, date_of_birth, username, password)
 VALUES (1, 'Минерва Макгонагалл', '1935-10-4', 'minerva', 'password');
@@ -582,63 +594,57 @@ INSERT INTO schedule (day, subject_id, time, place_id)
 VALUES ('вторник', 30, '12:00', 5);
 
 -- STAFF
-INSERT INTO staff(character_id, place_id)
-VALUES (5, 4);
-CALL add_staff('Винки', '1967-6-15', 'кухня Хогвартса', 'winky', 'password');
-CALL add_staff('Добби', '1965-6-28', 'кухня Хогвартса',  'dobby', 'password');
-CALL add_staff('Ирма Пинс', '1947-8-13', 'библиотека',  'irmapince', 'password');
-CALL add_staff('Питтс', '1970-11-19', 'кухня Хогвартса',  'pitts', 'password');
-
-CALL add_staff('Поппи Помфри', '1940-3-20', 'больничное крыло',  'poppypomfrey', 'password');
-CALL add_staff('Аглая Уайнскотт', '1970-2-10', 'больничное крыло',  'aglayawainscott', 'password');
-CALL add_staff('Мария Марон', '1975-5-11', 'больничное крыло',  'mariamarron', 'password');
-CALL add_staff('Ксения Ульянова', '1975-9-3', 'больничное крыло',  'kseniyaulyanova', 'password');
-CALL add_staff('Линдси Койзи', '1963-6-28', 'больничное крыло',  'lindseycozy', 'password');
-CALL add_staff('Финея Лакур', '1951-11-24', 'больничное крыло',  'finealacur', 'password');
-
-CALL add_staff('Аргус Филч', '1952-7-18', 'Хогвартс',  'argusfilch', 'password');
--- STUDENTS
 SELECT SETVAL('characters_id_seq', (SELECT MAX(id) FROM characters));
 SELECT SETVAL('students_id_seq', (SELECT MAX(id) FROM students));
-CALL add_student('Сэм Морондо', 'morondo', '1980-10-16', 1, varchar 'Слизерин');
-CALL add_student('Дэн Фердинанд', 'ferdinand', '1980-09-01', 1, varchar 'Гриффиндор');
-CALL add_student('Ксения Вап', 'vap', '1980-02-10', 1, varchar 'Когтевран');
-CALL add_student('Оливия Вайт', 'white', '1980-12-05', 1, varchar 'Пуффендуй');
-CALL add_student('Сара Земнухова', 'zemnuhova', '1979-05-07', 2, varchar 'Гриффиндор');
-CALL add_student('Даниель Свон', 'svon', '1979-08-23', 2, varchar 'Слизерин');
-CALL add_student('Робби Синец', 'sinec', '1979-11-21', 2, varchar 'Пуффендуй');
-CALL add_student('Джон Вараццо', 'varacco', '1979-01-03', 2, varchar 'Когтевран');
-CALL add_student('Сэм Зирис', 'ziris', '1978-07-15', 3, varchar 'Гриффиндор');
-CALL add_student('Михаил Вольнис', 'volnis', '1978-12-26', 3, varchar 'Пуффендуй');
-CALL add_student('Агата Дро', 'user1', '1978-06-22', 3, varchar 'Когтевран');
-CALL add_student('Анна Фауль', 'user2', '1978-10-23', 3, varchar 'Слизерин');
-CALL add_student('Кирилл Крески', 'user3', '1977-02-12', 4, varchar 'Слизерин');
-CALL add_student('Аглая Фивуальеро', 'user4', '1977-12-24', 4, varchar 'Пуффендуй');
-CALL add_student('Семен Новиков', 'user5', '1977-05-11', 4, varchar 'Гриффиндор');
-CALL add_student('Денис Валиев', 'user7', '1977-06-03', 4, varchar 'Когтевран');
-CALL add_student('Ян Петренко', 'user8', '1976-03-08', 5, varchar 'Слизерин');
-CALL add_student('Варвара Сэлф', 'user9', '1976-10-20', 5, varchar 'Гриффиндор');
-CALL add_student('Владимир Ацкев', 'user10', '1976-07-18', 5, varchar 'Пуффендуй');
-CALL add_student('Аллан Родимич', 'user11', '1976-04-30', 5, varchar 'Когтевран');
-CALL add_student('Дерина Солли', 'user12', '1975-12-25', 6, varchar 'Когтевран');
-CALL add_student('Николас Бракон', 'user13', '1975-06-16', 6, varchar 'Пуффендуй');
-CALL add_student('Денис Арован', 'user14', '1975-02-01', 6, varchar 'Гриффиндор');
-CALL add_student('Пегги Мэнсон', 'user15', '1975-05-14', 6, varchar 'Слизерин');
-CALL add_student('Натали Далонс', 'user16', '1974-06-06', 7, varchar 'Гриффиндор');
-CALL add_student('Сара Дигинс', 'user17', '1974-08-07', 7, varchar 'Слизерин');
-CALL add_student('Мария Краланс', 'user18', '1974-12-03', 7, varchar 'Пуффендуй');
-CALL add_student('Опра Маффон', 'user19', '1974-04-23', 7, varchar 'Когтевран');
+INSERT INTO staff(character_id, place_id)
+VALUES (5, 4);
+select add_staff('Винки', '1967-6-15', 'кухня Хогвартса', 'winky', 'password');
+select add_staff('Добби', '1965-6-28', 'кухня Хогвартса', 'dobby', 'password');
+select add_staff('Ирма Пинс', '1947-8-13', 'библиотека', 'irmapince', 'password');
+select add_staff('Питтс', '1970-11-19', 'кухня Хогвартса', 'pitts', 'password');
+
+select add_staff('Поппи Помфри', '1940-3-20', 'больничное крыло', 'poppypomfrey', 'password');
+select add_staff('Аглая Уайнскотт', '1970-2-10', 'больничное крыло', 'aglayawainscott', 'password');
+select add_staff('Мария Марон', '1975-5-11', 'больничное крыло', 'mariamarron', 'password');
+select add_staff('Ксения Ульянова', '1975-9-3', 'больничное крыло', 'kseniyaulyanova', 'password');
+select add_staff('Линдси Койзи', '1963-6-28', 'больничное крыло', 'lindseycozy', 'password');
+select add_staff('Финея Лакур', '1951-11-24', 'больничное крыло', 'finealacur', 'password');
+
+select add_staff('Аргус Филч', '1952-7-18', 'Хогвартс', 'argusfilch', 'password');
+-- STUDENTS
+select add_student('Сэм Морондо', 'morondo', '1980-10-16', 1, varchar 'Слизерин');
+select add_student('Дэн Фердинанд', 'ferdinand', '1980-09-01', 1, varchar 'Гриффиндор');
+select add_student('Ксения Вап', 'vap', '1980-02-10', 1, varchar 'Когтевран');
+select add_student('Оливия Вайт', 'white', '1980-12-05', 1, varchar 'Пуффендуй');
+select add_student('Сара Земнухова', 'zemnuhova', '1979-05-07', 2, varchar 'Гриффиндор');
+select add_student('Даниель Свон', 'svon', '1979-08-23', 2, varchar 'Слизерин');
+select add_student('Робби Синец', 'sinec', '1979-11-21', 2, varchar 'Пуффендуй');
+select add_student('Джон Вараццо', 'varacco', '1979-01-03', 2, varchar 'Когтевран');
+select add_student('Сэм Зирис', 'ziris', '1978-07-15', 3, varchar 'Гриффиндор');
+select add_student('Михаил Вольнис', 'volnis', '1978-12-26', 3, varchar 'Пуффендуй');
+select add_student('Агата Дро', 'user1', '1978-06-22', 3, varchar 'Когтевран');
+select add_student('Анна Фауль', 'user2', '1978-10-23', 3, varchar 'Слизерин');
+select add_student('Кирилл Крески', 'user3', '1977-02-12', 4, varchar 'Слизерин');
+select add_student('Аглая Фивуальеро', 'user4', '1977-12-24', 4, varchar 'Пуффендуй');
+select add_student('Семен Новиков', 'user5', '1977-05-11', 4, varchar 'Гриффиндор');
+select add_student('Денис Валиев', 'user7', '1977-06-03', 4, varchar 'Когтевран');
+select add_student('Ян Петренко', 'user8', '1976-03-08', 5, varchar 'Слизерин');
+select add_student('Варвара Сэлф', 'user9', '1976-10-20', 5, varchar 'Гриффиндор');
+select add_student('Владимир Ацкев', 'user10', '1976-07-18', 5, varchar 'Пуффендуй');
+select add_student('Аллан Родимич', 'user11', '1976-04-30', 5, varchar 'Когтевран');
+select add_student('Дерина Солли', 'user12', '1975-12-25', 6, varchar 'Когтевран');
+select add_student('Николас Бракон', 'user13', '1975-06-16', 6, varchar 'Пуффендуй');
+select add_student('Денис Арован', 'user14', '1975-02-01', 6, varchar 'Гриффиндор');
+select add_student('Пегги Мэнсон', 'user15', '1975-05-14', 6, varchar 'Слизерин');
+select add_student('Натали Далонс', 'user16', '1974-06-06', 7, varchar 'Гриффиндор');
+select add_student('Сара Дигинс', 'user17', '1974-08-07', 7, varchar 'Слизерин');
+select add_student('Мария Краланс', 'user18', '1974-12-03', 7, varchar 'Пуффендуй');
+select add_student('Опра Маффон', 'user19', '1974-04-23', 7, varchar 'Когтевран');
 
 
 CREATE INDEX join_prof ON professors (character_id);
 CREATE INDEX join_staff ON staff (character_id);
 CREATE INDEX join_stud ON students (character_id);
-
-CREATE TRIGGER check_related_tables
-    AFTER INSERT
-    ON character_roles
-    FOR EACH ROW
-EXECUTE PROCEDURE check_rt();
 
 CREATE OR REPLACE FUNCTION add_exam_points()
     RETURNS TRIGGER

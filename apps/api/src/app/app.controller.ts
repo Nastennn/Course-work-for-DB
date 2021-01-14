@@ -22,9 +22,8 @@ export class AppController {
     }
 
     @Get('professors')
-    getProfessors(@Query() myDto) {
-        const { sid } = myDto;
-        return this.appService.getProfessors(sid);
+    getProfessors() {
+        return this.appService.getProfessors();
     }
 
     @Get('students')

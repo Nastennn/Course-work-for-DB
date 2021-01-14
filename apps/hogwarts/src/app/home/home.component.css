@@ -4,3 +4,7 @@
     border: 1px solid #ccc;
     border-top: none;
 }
+
+.img {
+    float: right;
+}
