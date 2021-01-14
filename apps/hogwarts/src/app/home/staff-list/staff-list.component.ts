@@ -27,7 +27,6 @@ export class StaffListComponent {
             columns: {
                 name: {
                     title: 'Name',
-                    editable: false
                 },
                 date_of_birth: {
                     title: 'Birthday',
@@ -37,11 +36,9 @@ export class StaffListComponent {
                         }
                         return null;
                     },
-                    editable: false
                 },
                 place: {
                     title: 'Place',
-                    editable: false
                 },
                 location: {
                     title: 'Location'

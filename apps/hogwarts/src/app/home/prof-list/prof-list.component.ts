@@ -29,7 +29,6 @@ export class ProfListComponent {
             columns: {
                 name: {
                     title: 'Name',
-                    editable: false
                 },
                 date_of_birth: {
                     title: 'Birthday',
@@ -39,11 +38,9 @@ export class ProfListComponent {
                         }
                         return null;
                     },
-                    editable: false
                 },
                 subject_name: {
                     title: 'Subject',
-                    editable: false
                 }
             },
             actions: {

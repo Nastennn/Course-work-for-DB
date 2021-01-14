@@ -24,7 +24,6 @@ export class JournalComponent {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.data = new UserDataSource(this.userService);
         const {role_id} = JSON.parse(localStorage.currentUser);
-        console.log(role_id);
         this.settings = {
             columns: {
                 name: {

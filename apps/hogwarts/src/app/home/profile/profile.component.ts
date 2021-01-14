@@ -4,6 +4,7 @@ import {UserService} from "../../_services";
 import {first} from "rxjs/operators";
 import {formatDate} from "@angular/common";
 
+const HEADMASTER_ROLE_ID = 4;
 const PROFESSOR_ROLE_ID = 3;
 const STUDENT_ROLE_ID = 2;
 
@@ -27,15 +28,8 @@ export class ProfileComponent {
             this.greeting = 'Professor';
         } else if (this.role === STUDENT_ROLE_ID){
             this.greeting = 'Student';
+        } else if (this.role === HEADMASTER_ROLE_ID){
+            this.greeting = 'Headmaster';
         }
-    }
-
-    ngOnInit() {
-        this.loading = true;
-        this.professors = ['d', 'd3', 'g'];
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.loading = false;
-            this.users = users;
-        });
     }
 }
