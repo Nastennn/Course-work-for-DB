@@ -10,7 +10,7 @@ import {BasicAuthInterceptor, ErrorInterceptor} from './_helpers';
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
-import {JournalComponent} from "./home/journal/journal.component";
+import {GradebookComponent} from "./home/gradebook/gradebook.component";
 import {ProfListComponent} from "./home/prof-list/prof-list.component";
 import {StudListComponent} from "./home/stud-list/stud-list.component";
 import {ProfileComponent} from "./home/profile/profile.component";
@@ -31,7 +31,7 @@ import {StaffListComponent} from "./home/staff-list/staff-list.component";
         AppComponent,
         HomeComponent,
         LoginComponent,
-        JournalComponent,
+        GradebookComponent,
         ProfListComponent,
         StudListComponent,
         ProfileComponent,
