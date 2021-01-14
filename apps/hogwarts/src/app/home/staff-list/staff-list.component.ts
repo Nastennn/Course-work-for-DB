@@ -39,11 +39,11 @@ export class StaffListComponent {
                     },
                     editable: false
                 },
-                place_name: {
+                place: {
                     title: 'Place',
                     editable: false
                 },
-                loc_name: {
+                location: {
                     title: 'Location'
                 }
             },
