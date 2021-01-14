@@ -31,5 +31,6 @@ export class ProfileComponent {
         } else if (this.role === HEADMASTER_ROLE_ID){
             this.greeting = 'Headmaster';
         }
+        this.currentUser.image = this.currentUser.image || 'https://thispersondoesnotexist.com/image';
     }
 }

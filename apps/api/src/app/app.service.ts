@@ -26,8 +26,8 @@ export class AppService {
         const [character] = await sql`
             SELECT characters.id, character_roles.role_id, students.year AS year
             FROM characters
-                     JOIN character_roles ON characters.id = character_roles.character_id
-                     JOIN students ON characters.id = students.character_id
+                     LEFT JOIN character_roles ON characters.id = character_roles.character_id
+                     LEFT JOIN students ON characters.id = students.character_id
             WHERE sid = ${sid}
         `;
         // Professor
@@ -46,7 +46,6 @@ export class AppService {
                          LEFT JOIN subject_professor_year ON subject_professor_year.id = exams.subject_professor_year_id
                          LEFT JOIN subjects ON subjects.id = subject_professor_year.id_subject
                 WHERE subject_professor_year.id_professor = ${character.id};
-
             `;
         }
 
@@ -64,7 +63,7 @@ export class AppService {
                          LEFT JOIN characters ON students.character_id = characters.id
                          LEFT JOIN subject_professor_year ON subject_professor_year.id = exams.subject_professor_year_id
                          LEFT JOIN subjects ON subjects.id = subject_professor_year.id_subject
-                WHERE students.id = ${character.id}
+                WHERE characters.id = ${character.id}
                   AND subject_professor_year.year = ${character.year};
             `;
         }
@@ -73,14 +72,15 @@ export class AppService {
 
     async getProfessors() {
         return await sql`
-            SELECT characters.name          AS name,
-                   characters.date_of_birth AS date_of_birth,
-                   string_agg(distinct subjects.name, ', ') AS subject_name
+            SELECT characters.name                          AS name,
+                   characters.date_of_birth                 AS date_of_birth,
+                   STRING_AGG(DISTINCT subjects.name, ', ') AS subject_name
             FROM characters
-                     JOIN subject_professor_year AS spy ON spy.id_professor = characters.id
-                     JOIN subjects ON spy.id_subject = subjects.id
+                     LEFT JOIN character_roles ON characters.id = character_roles.character_id
+                     LEFT JOIN subject_professor_year AS spy ON spy.id_professor = characters.id
+                     LEFT JOIN subjects ON spy.id_subject = subjects.id
+            WHERE character_roles.role_id = 3
             GROUP BY characters.name, characters.date_of_birth
-
         `;
     }
 

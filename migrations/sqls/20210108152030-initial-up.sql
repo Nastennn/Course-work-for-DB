@@ -186,26 +186,21 @@ CREATE OR REPLACE FUNCTION add_staff(n text, dob date, pl_name text, un text, p 
     RETURNS void
     LANGUAGE plpgsql AS
 $$
+DECLARE
+    _id_character int;
 BEGIN
-    INSERT INTO characters (name, date_of_birth, username, password) VALUES (n, dob, un, p);
+    INSERT INTO characters (name, date_of_birth, username, password)
+    VALUES (n, dob, un, p)
+    RETURNING id INTO _id_character;
     INSERT INTO character_roles (role_id, character_id)
-    VALUES (3, (
-        SELECT id
-        FROM characters
-        WHERE name = n
-          AND date_of_birth = dob));
+    VALUES (1, _id_character);
     INSERT INTO staff (character_id, place_id)
-    VALUES ((
-                SELECT id
-                FROM characters
-                WHERE name = n
-                  AND date_of_birth = dob
-            ), (
-                SELECT places.id
-                FROM places
-                         JOIN locations ON places.location_id = locations.id
-                WHERE places.name = pl_name
-            ));
+    VALUES (_id_character, (
+        SELECT places.id
+        FROM places
+                 JOIN locations ON places.location_id = locations.id
+        WHERE places.name = pl_name
+    ));
 END
 $$;
 
@@ -598,48 +593,48 @@ SELECT SETVAL('characters_id_seq', (SELECT MAX(id) FROM characters));
 SELECT SETVAL('students_id_seq', (SELECT MAX(id) FROM students));
 INSERT INTO staff(character_id, place_id)
 VALUES (5, 4);
-select add_staff('Винки', '1967-6-15', 'кухня Хогвартса', 'winky', 'password');
-select add_staff('Добби', '1965-6-28', 'кухня Хогвартса', 'dobby', 'password');
-select add_staff('Ирма Пинс', '1947-8-13', 'библиотека', 'irmapince', 'password');
-select add_staff('Питтс', '1970-11-19', 'кухня Хогвартса', 'pitts', 'password');
+SELECT add_staff('Винки', '1967-6-15', 'кухня Хогвартса', 'winky', 'password');
+SELECT add_staff('Добби', '1965-6-28', 'кухня Хогвартса', 'dobby', 'password');
+SELECT add_staff('Ирма Пинс', '1947-8-13', 'библиотека', 'irmapince', 'password');
+SELECT add_staff('Питтс', '1970-11-19', 'кухня Хогвартса', 'pitts', 'password');
 
-select add_staff('Поппи Помфри', '1940-3-20', 'больничное крыло', 'poppypomfrey', 'password');
-select add_staff('Аглая Уайнскотт', '1970-2-10', 'больничное крыло', 'aglayawainscott', 'password');
-select add_staff('Мария Марон', '1975-5-11', 'больничное крыло', 'mariamarron', 'password');
-select add_staff('Ксения Ульянова', '1975-9-3', 'больничное крыло', 'kseniyaulyanova', 'password');
-select add_staff('Линдси Койзи', '1963-6-28', 'больничное крыло', 'lindseycozy', 'password');
-select add_staff('Финея Лакур', '1951-11-24', 'больничное крыло', 'finealacur', 'password');
+SELECT add_staff('Поппи Помфри', '1940-3-20', 'больничное крыло', 'poppypomfrey', 'password');
+SELECT add_staff('Аглая Уайнскотт', '1970-2-10', 'больничное крыло', 'aglayawainscott', 'password');
+SELECT add_staff('Мария Марон', '1975-5-11', 'больничное крыло', 'mariamarron', 'password');
+SELECT add_staff('Ксения Ульянова', '1975-9-3', 'больничное крыло', 'kseniyaulyanova', 'password');
+SELECT add_staff('Линдси Койзи', '1963-6-28', 'больничное крыло', 'lindseycozy', 'password');
+SELECT add_staff('Финея Лакур', '1951-11-24', 'больничное крыло', 'finealacur', 'password');
 
-select add_staff('Аргус Филч', '1952-7-18', 'Хогвартс', 'argusfilch', 'password');
+SELECT add_staff('Аргус Филч', '1952-7-18', 'Хогвартс', 'argusfilch', 'password');
 -- STUDENTS
-select add_student('Сэм Морондо', 'morondo', '1980-10-16', 1, varchar 'Слизерин');
-select add_student('Дэн Фердинанд', 'ferdinand', '1980-09-01', 1, varchar 'Гриффиндор');
-select add_student('Ксения Вап', 'vap', '1980-02-10', 1, varchar 'Когтевран');
-select add_student('Оливия Вайт', 'white', '1980-12-05', 1, varchar 'Пуффендуй');
-select add_student('Сара Земнухова', 'zemnuhova', '1979-05-07', 2, varchar 'Гриффиндор');
-select add_student('Даниель Свон', 'svon', '1979-08-23', 2, varchar 'Слизерин');
-select add_student('Робби Синец', 'sinec', '1979-11-21', 2, varchar 'Пуффендуй');
-select add_student('Джон Вараццо', 'varacco', '1979-01-03', 2, varchar 'Когтевран');
-select add_student('Сэм Зирис', 'ziris', '1978-07-15', 3, varchar 'Гриффиндор');
-select add_student('Михаил Вольнис', 'volnis', '1978-12-26', 3, varchar 'Пуффендуй');
-select add_student('Агата Дро', 'user1', '1978-06-22', 3, varchar 'Когтевран');
-select add_student('Анна Фауль', 'user2', '1978-10-23', 3, varchar 'Слизерин');
-select add_student('Кирилл Крески', 'user3', '1977-02-12', 4, varchar 'Слизерин');
-select add_student('Аглая Фивуальеро', 'user4', '1977-12-24', 4, varchar 'Пуффендуй');
-select add_student('Семен Новиков', 'user5', '1977-05-11', 4, varchar 'Гриффиндор');
-select add_student('Денис Валиев', 'user7', '1977-06-03', 4, varchar 'Когтевран');
-select add_student('Ян Петренко', 'user8', '1976-03-08', 5, varchar 'Слизерин');
-select add_student('Варвара Сэлф', 'user9', '1976-10-20', 5, varchar 'Гриффиндор');
-select add_student('Владимир Ацкев', 'user10', '1976-07-18', 5, varchar 'Пуффендуй');
-select add_student('Аллан Родимич', 'user11', '1976-04-30', 5, varchar 'Когтевран');
-select add_student('Дерина Солли', 'user12', '1975-12-25', 6, varchar 'Когтевран');
-select add_student('Николас Бракон', 'user13', '1975-06-16', 6, varchar 'Пуффендуй');
-select add_student('Денис Арован', 'user14', '1975-02-01', 6, varchar 'Гриффиндор');
-select add_student('Пегги Мэнсон', 'user15', '1975-05-14', 6, varchar 'Слизерин');
-select add_student('Натали Далонс', 'user16', '1974-06-06', 7, varchar 'Гриффиндор');
-select add_student('Сара Дигинс', 'user17', '1974-08-07', 7, varchar 'Слизерин');
-select add_student('Мария Краланс', 'user18', '1974-12-03', 7, varchar 'Пуффендуй');
-select add_student('Опра Маффон', 'user19', '1974-04-23', 7, varchar 'Когтевран');
+SELECT add_student('Сэм Морондо', 'morondo', '1980-10-16', 1, varchar 'Слизерин');
+SELECT add_student('Дэн Фердинанд', 'ferdinand', '1980-09-01', 1, varchar 'Гриффиндор');
+SELECT add_student('Ксения Вап', 'vap', '1980-02-10', 1, varchar 'Когтевран');
+SELECT add_student('Оливия Вайт', 'white', '1980-12-05', 1, varchar 'Пуффендуй');
+SELECT add_student('Сара Земнухова', 'zemnuhova', '1979-05-07', 2, varchar 'Гриффиндор');
+SELECT add_student('Даниель Свон', 'svon', '1979-08-23', 2, varchar 'Слизерин');
+SELECT add_student('Робби Синец', 'sinec', '1979-11-21', 2, varchar 'Пуффендуй');
+SELECT add_student('Джон Вараццо', 'varacco', '1979-01-03', 2, varchar 'Когтевран');
+SELECT add_student('Сэм Зирис', 'ziris', '1978-07-15', 3, varchar 'Гриффиндор');
+SELECT add_student('Михаил Вольнис', 'volnis', '1978-12-26', 3, varchar 'Пуффендуй');
+SELECT add_student('Агата Дро', 'user1', '1978-06-22', 3, varchar 'Когтевран');
+SELECT add_student('Анна Фауль', 'user2', '1978-10-23', 3, varchar 'Слизерин');
+SELECT add_student('Кирилл Крески', 'user3', '1977-02-12', 4, varchar 'Слизерин');
+SELECT add_student('Аглая Фивуальеро', 'user4', '1977-12-24', 4, varchar 'Пуффендуй');
+SELECT add_student('Семен Новиков', 'user5', '1977-05-11', 4, varchar 'Гриффиндор');
+SELECT add_student('Денис Валиев', 'user7', '1977-06-03', 4, varchar 'Когтевран');
+SELECT add_student('Ян Петренко', 'user8', '1976-03-08', 5, varchar 'Слизерин');
+SELECT add_student('Варвара Сэлф', 'user9', '1976-10-20', 5, varchar 'Гриффиндор');
+SELECT add_student('Владимир Ацкев', 'user10', '1976-07-18', 5, varchar 'Пуффендуй');
+SELECT add_student('Аллан Родимич', 'user11', '1976-04-30', 5, varchar 'Когтевран');
+SELECT add_student('Дерина Солли', 'user12', '1975-12-25', 6, varchar 'Когтевран');
+SELECT add_student('Николас Бракон', 'user13', '1975-06-16', 6, varchar 'Пуффендуй');
+SELECT add_student('Денис Арован', 'user14', '1975-02-01', 6, varchar 'Гриффиндор');
+SELECT add_student('Пегги Мэнсон', 'user15', '1975-05-14', 6, varchar 'Слизерин');
+SELECT add_student('Натали Далонс', 'user16', '1974-06-06', 7, varchar 'Гриффиндор');
+SELECT add_student('Сара Дигинс', 'user17', '1974-08-07', 7, varchar 'Слизерин');
+SELECT add_student('Мария Краланс', 'user18', '1974-12-03', 7, varchar 'Пуффендуй');
+SELECT add_student('Опра Маффон', 'user19', '1974-04-23', 7, varchar 'Когтевран');
 
 
 CREATE INDEX join_prof ON professors (character_id);
